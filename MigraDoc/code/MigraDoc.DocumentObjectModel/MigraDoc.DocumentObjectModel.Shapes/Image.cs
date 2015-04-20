@@ -100,7 +100,14 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     [DV]
     internal NString name = NString.NullValue;
 
-    /// <summary>
+	  public byte[] DataBytes
+	  {
+		  get { return this.dataBytes.Value; }
+		  set { this.dataBytes.Value = value; }
+	  }
+	  [DV]
+	  internal NByteArray dataBytes = NByteArray.NullValue;
+	  /// <summary>
     /// Gets or sets the ScaleWidth of the image.
     /// If the Width is set to, the resulting image width is ScaleWidth * Width.
     /// </summary>

@@ -150,6 +150,7 @@
     <Compile Include="MigraDoc.DocumentObjectModel.Internals\Meta.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MigraDoc.DocumentObjectModel.Internals\NByteArray.cs" />
     <Compile Include="MigraDoc.DocumentObjectModel.Internals\ValueDescriptor.cs">
       <SubType>Code</SubType>
     </Compile>

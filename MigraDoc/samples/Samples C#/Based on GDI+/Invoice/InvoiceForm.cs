@@ -37,6 +37,7 @@ using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.Rendering;
 using System.Diagnostics;
+using System.IO;
 
 namespace Invoice
 {
@@ -131,6 +132,13 @@ namespace Invoice
       style.ParagraphFormat.TabStops.AddTabStop("16cm", TabAlignment.Right);
     }
 
+	public byte[] imageToByteArray(System.Drawing.Image imageIn)
+	{
+		MemoryStream ms = new MemoryStream();
+		imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+		return ms.ToArray();
+	}
+
     /// <summary>
     /// Creates the static parts of the invoice.
     /// </summary>
@@ -140,7 +148,9 @@ namespace Invoice
       Section section = this.document.AddSection();
 
       // Put a logo in the header
-      Image image = section.Headers.Primary.AddImage("../../PowerBooks.png");
+      //Image image = section.Headers.Primary.AddImage("../../PowerBooks.png");
+	    var foo = imageToByteArray(System.Drawing.Image.FromFile("../../PowerBooks.png"));
+	    var image = section.Headers.Primary.AddImage(foo);	 
       image.Height = "2.5cm";
       image.LockAspectRatio = true;
       image.RelativeVertical = RelativeVertical.Line;

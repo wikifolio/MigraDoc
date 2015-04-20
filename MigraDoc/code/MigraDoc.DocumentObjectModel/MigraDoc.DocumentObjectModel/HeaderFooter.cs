@@ -135,6 +135,11 @@ namespace MigraDoc.DocumentObjectModel
       return this.Elements.AddImage(fileName);
     }
 
+	public Image AddImage(byte[] imageBytes)
+	{
+	  return this.Elements.AddImage(imageBytes);
+	}
+
     /// <summary>
     /// Adds a new textframe to the header or footer.
     /// </summary>

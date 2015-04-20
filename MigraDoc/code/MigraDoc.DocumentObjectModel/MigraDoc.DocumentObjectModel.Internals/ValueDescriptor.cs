@@ -94,6 +94,9 @@ namespace MigraDoc.DocumentObjectModel.Internals
       if (type == typeof(String))
         return new ValueTypeDescriptor(name, typeof(String), type, memberInfo, flags);
 
+	  if (type == typeof(NByteArray))
+		  return new ValueTypeDescriptor(name, typeof(byte[]), type, memberInfo, flags);
+			
       if (type == typeof(NEnum))
       {
         Type valueType = attr.Type;

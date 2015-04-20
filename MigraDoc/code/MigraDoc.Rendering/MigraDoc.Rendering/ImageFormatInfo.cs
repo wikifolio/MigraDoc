@@ -51,5 +51,6 @@ namespace MigraDoc.Rendering
 
     internal ImageFailure failure;
     internal string ImagePath;
+	internal byte[] Bytes;
   }
 }

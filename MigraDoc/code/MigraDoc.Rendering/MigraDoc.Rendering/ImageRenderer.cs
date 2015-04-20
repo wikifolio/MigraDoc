@@ -62,7 +62,7 @@ namespace MigraDoc.Rendering
     {
       this.imageFilePath = image.GetFilePath(this.documentRenderer.WorkingDirectory);
       //if (!File.Exists(this.imageFilePath))
-      if (!XImage.ExistsFile(this.imageFilePath))
+      if (!XImage.ExistsFile(this.imageFilePath) && this.image.DataBytes == null)
       {
         this.failure = ImageFailure.FileNotFound;
         Trace.WriteLine(Messages.ImageNotFound(this.image.Name), "warning");
@@ -70,6 +70,7 @@ namespace MigraDoc.Rendering
       ImageFormatInfo formatInfo = (ImageFormatInfo)this.renderInfo.FormatInfo;
       formatInfo.failure = this.failure;
       formatInfo.ImagePath = this.imageFilePath;
+	  formatInfo.Bytes = this.image.DataBytes;
       CalculateImageDimensions();
       base.Format(area, previousFormatInfo);
     }
@@ -106,8 +107,17 @@ namespace MigraDoc.Rendering
         try
         {
           XRect srcRect = new XRect(formatInfo.CropX, formatInfo.CropY, formatInfo.CropWidth, formatInfo.CropHeight);
-          xImage = XImage.FromFile(formatInfo.ImagePath);
-          this.gfx.DrawImage(xImage, destRect, srcRect, XGraphicsUnit.Point); //Pixel.
+	    if (formatInfo.Bytes != null)
+	    {
+		    var ms = new MemoryStream(formatInfo.Bytes);
+		    var drawImage = System.Drawing.Image.FromStream(ms);
+			xImage = XImage.FromGdiPlusImage(drawImage);
+	    }
+	    else
+	    {
+			xImage = XImage.FromFile(formatInfo.ImagePath);
+	    }
+        this.gfx.DrawImage(xImage, destRect, srcRect, XGraphicsUnit.Point); //Pixel.
         }
         catch (Exception)
         {
@@ -165,7 +175,16 @@ namespace MigraDoc.Rendering
         XImage xImage = null;
         try
         {
-          xImage = XImage.FromFile(this.imageFilePath);
+	        if (image.DataBytes != null)
+	        {
+				var ms = new MemoryStream(formatInfo.Bytes);
+				var drawImage = System.Drawing.Image.FromStream(ms);
+				xImage = XImage.FromGdiPlusImage(drawImage);
+	        }
+	        else
+	        {
+				xImage = XImage.FromFile(this.imageFilePath);
+	        }
         }
         catch (InvalidOperationException ex)
         {
